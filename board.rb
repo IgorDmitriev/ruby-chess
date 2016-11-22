@@ -24,7 +24,12 @@ class Board
       raise 'Ending position is invalid'
     end
 
+    unless self[start_pos].moves.include?(end_pos)
+      raise 'Can not move there!'
+    end
+
     self[end_pos], self[start_pos] = self[start_pos], nil
+    self[end_pos].position = end_pos
     # @move_pos = []
   end
 
@@ -51,7 +56,7 @@ class Board
   def set_white_pieces
     (0..1).each do |row|
       (0..7).each do |col|
-        grid[row][col] = Piece.new(:white)
+        grid[row][col] = Bishop.new(:white, self, [row, col])
       end
     end
   end
@@ -59,7 +64,7 @@ class Board
   def set_black_pieces
     (6..7).each do |row|
       (0..7).each do |col|
-        grid[row][col] = Piece.new(:black)
+        grid[row][col] = Piece.new(:black, self, [row, col])
       end
     end
   end
