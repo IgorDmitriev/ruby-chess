@@ -5,8 +5,14 @@ class Board
 
   def initialize
     @grid = Array.new(8) { Array.new(8) { nil } }
+    # @move_pos = []
     set_initial_position
   end
+
+  # def next_move(pos)
+  #   move_pos << pos
+  #   move_piece(move_pos[0], move_pos[1]) if move_pos.size == 2
+  # end
 
   def move_piece(start_pos, end_pos)
     #  self[start_pos].color == turn_color
@@ -19,7 +25,7 @@ class Board
     end
 
     self[end_pos], self[start_pos] = self[start_pos], nil
-
+    # @move_pos = []
   end
 
   def valid_pos?(pos)

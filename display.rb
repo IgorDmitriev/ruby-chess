@@ -11,15 +11,13 @@ class Display
   end
 
   def render
-    cursor_color = :blue
-    current_color = nil
     (0..7).each do |row|
       (0..7).each do |col|
-        spot = board[[row, col]]
+        piece = board[[row, col]]
         current_color = if [row, col] == cursor.cursor_pos
-                          cursor_color
+                          cursor.color
                         else
-                          spot ? spot.color : :red
+                          piece ? piece.color : :red
                         end
         print '  '.colorize(background: current_color)
       end
@@ -28,11 +26,21 @@ class Display
   end
 
   def move_cursor
-    while true
-      system 'clear'
-      render
-      cursor.get_input
+    loop do
+      move = []
+      while move.size < 2
+        system 'clear'
+        render
+        pos = cursor.get_input
+        if pos
+          move << pos
+        end
+      end
+      board.move_piece(move[0], move[1])
     end
+  rescue => e
+    puts e.message
+    retry
   end
 
 end

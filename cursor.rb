@@ -32,11 +32,13 @@ MOVES = {
 
 class Cursor
 
-  attr_reader :cursor_pos, :board
+  attr_reader :cursor_pos, :board, :color, :selected
 
   def initialize(cursor_pos, board)
     @cursor_pos = cursor_pos
     @board = board
+    @selected = false
+    @color = :blue
   end
 
   def get_input
@@ -44,6 +46,14 @@ class Cursor
     handle_key(key)
   end
 
+  def toggle_selected
+    @selected = !@selected
+    if @selected
+      @color = :green
+    else
+      @color = :blue
+    end
+  end
   private
 
   def read_char
@@ -52,7 +62,7 @@ class Cursor
     STDIN.raw! # in raw mode data is given as is to the program--the system
                  # doesn't preprocess special characters such as control-c
 
-    input = STDIN.get c.chr # STDIN.getc reads a one-character string as a
+    input = STDIN.getc.chr # STDIN.getc reads a one-character string as a
                              # numeric keycode. chr returns a string of the
                              # character represented by the keycode.
                              # (e.g. 65.chr => "A")
@@ -76,9 +86,9 @@ class Cursor
   end
 
   def handle_key(key)
-
     case key
     when :return, :space
+      toggle_selected
       return @cursor_pos
     when :left, :right, :up, :down
       update_pos(MOVES[key])
@@ -90,5 +100,9 @@ class Cursor
   def update_pos(diff)
     new_cursor_pos = [cursor_pos[0] + diff[0], cursor_pos[1] + diff[1]]
     @cursor_pos = new_cursor_pos if board.valid_pos?(new_cursor_pos)
+    nil
   end
+
+
+
 end
