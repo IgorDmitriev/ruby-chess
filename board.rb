@@ -4,7 +4,7 @@ class Board
   attr_reader :grid
 
   def initialize
-    @grid = Array.new(8) { Array.new(8) { nil } }
+    @grid = Array.new(8) { Array.new(8) { NullPiece.instance } }
     # @move_pos = []
     set_initial_position
   end
@@ -20,15 +20,16 @@ class Board
       raise 'Starting position is invalid'
     end
     # self[end_pos].color != turn_color
-    unless !self[end_pos] && valid_pos?(end_pos)
+    unless (self[end_pos].color == :red || self[end_pos].color != self[start_pos].color) && valid_pos?(end_pos)
       raise 'Ending position is invalid'
     end
 
+    p self[start_pos].moves
     unless self[start_pos].moves.include?(end_pos)
       raise 'Can not move there!'
     end
 
-    self[end_pos], self[start_pos] = self[start_pos], nil
+    self[end_pos], self[start_pos] = self[start_pos], NullPiece.instance
     self[end_pos].position = end_pos
     # @move_pos = []
   end

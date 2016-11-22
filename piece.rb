@@ -1,3 +1,5 @@
+require 'singleton'
+
 class Piece
   attr_reader :color, :board
   attr_accessor :position
@@ -46,9 +48,9 @@ module SlidingPiece
   def grow_unblocked_moves_in_dirs(pos, dx, dy)
     row, col = pos
     next_pos = [row + dx, col + dy]
-    return [] if board[next_pos].color == self.color
     return [] unless board.valid_pos?(next_pos)
-    return [next_pos] unless board[next_pos].color == self.color
+    return [] if board[next_pos].color == self.color
+    return [next_pos] if board[next_pos].color == :black
 
     [next_pos] + grow_unblocked_moves_in_dirs(next_pos, dx, dy)
   end
@@ -86,4 +88,19 @@ class Queen < Piece
   def move_dirs
     [:diagonal, :horizontal, :vertical]
   end
+end
+
+class NullPiece < Piece
+  include Singleton
+
+  # def initialize
+  #   super(:red, '', [])
+  # end
+  def initialize
+  end
+
+  def color
+    :red
+  end
+
 end
