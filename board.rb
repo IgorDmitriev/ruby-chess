@@ -57,7 +57,7 @@ class Board
   def set_white_pieces
     (0..1).each do |row|
       (0..7).each do |col|
-        grid[row][col] = Bishop.new(:white, self, [row, col])
+        grid[row][col] = Knight.new(:white, self, [row, col])
       end
     end
   end

@@ -43,10 +43,10 @@ class Display
       end
       board.move_piece(move[0], move[1])
     end
-  # rescue => e
-  #   puts e.message
-  #   sleep 1
-  #   retry
+  rescue => e
+    puts e.message
+    sleep 1
+    retry
   end
 
 end
