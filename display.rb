@@ -24,7 +24,7 @@ class Display
                         else
                           piece.color
                         end
-        print '  '.colorize(background: current_color)
+        print piece.to_s.colorize(background: current_color, color: piece.enemy_color)
       end
       puts ''
     end
@@ -42,6 +42,10 @@ class Display
         end
       end
       board.move_piece(move[0], move[1])
+      if board.checkmate?(board[move[1]].enemy_color)
+        puts 'CHECKMATE'.red.on_blue.blink
+        break
+      end
     end
   rescue => e
     puts e.message
